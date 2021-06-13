@@ -1,0 +1,14 @@
+﻿@using RoundTheCode.Roulette.Models
+@if (WheelNumber != null)
+{
+    <li class="@WheelNumber.Colour.ToString().ToLower()"><span class="number">@WheelNumber.Number</span>
+    @if (WheelNumber.Selected)
+    {
+        <span class="ball-container"><span class="ball"></span></span>
+    }
+    </li>
+}
+@code {
+    [Parameter]
+    public WheelNumber WheelNumber { get; set; }
+}

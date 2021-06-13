@@ -1,0 +1,58 @@
+﻿@keyframes rotate {
+    0% {
+        transform: rotateZ(360deg);
+    }
+
+    100% {
+        transform: rotateZ(0deg);
+    }
+}
+
+.container {
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.roulette {
+    border: 10px #D4AF37 solid;
+    border-radius: 50%;
+    width: 700px;
+    height: 700px;
+    animation: rotate 15s infinite linear
+}
+
+.numbers {
+    z-index: 1;
+}
+
+.ball-circle {
+    z-index: 2;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    border: 10px #D4AF37 solid;
+    position: absolute;
+    margin: 40px;
+}
+
+.inner-circle {
+    z-index: 3;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    border: 10px #D4AF37 solid;
+    position: absolute;
+    background-color: #aaa;
+    margin: 140px;
+}
+
+.numbers ul {
+    list-style: none;
+    padding-left: 0;
+    position: absolute;
+}
+
+p {
+    font-size: 26px;
+}

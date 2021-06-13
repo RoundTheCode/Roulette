@@ -1,0 +1,85 @@
+﻿@using RoundTheCode.Roulette.Models
+@page "/"
+@if (Wheel != null)
+{
+    <div class="container">
+        <div class="roulette">
+            <div class="numbers">
+                <ul>
+                    @foreach (var wheelNumber in Wheel.WheelNumbers)
+                    {
+                        <WheelNumberComponent WheelNumber="@wheelNumber"></WheelNumberComponent>
+                    }
+                </ul>
+            </div>
+            <div class="ball-circle">
+
+            </div>
+            <div class="inner-circle">
+
+            </div>
+        </div>
+        @if (Wheel.Colour != null)
+        {
+            <p>You have picked @Wheel.Colour.Value</p>
+        } 
+        @if (Wheel.WinningNumber != null)
+        {
+            <p>The winning number is @Wheel.WinningNumber.Number @Wheel.WinningNumber.Colour. @(Wheel.WinningNumber.Colour == Wheel.Colour ? "You win" : "You lose")</p>
+        } 
+
+        @if (!Wheel.Running)
+        {
+            <p>
+                <button type="submit" @onclick="@(async(e) => await OnRollAsync(e, WheelNumberColourEnum.Red))">Red</button>
+                <button type="submit" @onclick="@(async(e) => await OnRollAsync(e, WheelNumberColourEnum.Black))">Black</button>
+            </p>
+        } 
+    </div>
+    
+} 
+@code {
+
+    public Wheel Wheel { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Wheel = new Wheel();
+
+        Wheel.OnStartAsync += async () =>
+        {
+            StateHasChanged();
+            await Task.CompletedTask;
+        };
+        Wheel.OnFinishAsync += async () =>
+        {
+            StateHasChanged();
+            await Task.CompletedTask;
+        };
+        Wheel.OnNumberChangedAsync += async () =>
+        {
+            for (var index = 0; index <= Wheel.WheelNumbers.GetUpperBound(0); index ++)
+            {
+                if (index == Wheel.CurrentNumberIndex)
+                {
+                    Wheel.WheelNumbers[index].Selected = true;
+                }
+                else
+                {
+                    Wheel.WheelNumbers[index].Selected = false;
+                }
+            }
+            StateHasChanged();
+            await Task.CompletedTask;
+        };
+
+        await base.OnInitializedAsync();
+    }
+
+    public async Task OnRollAsync(MouseEventArgs mouseEventArgs, WheelNumberColourEnum colour)
+    {
+        Wheel.Colour = colour;
+
+        await Wheel.RollTheBallAsync();
+    }
+}
